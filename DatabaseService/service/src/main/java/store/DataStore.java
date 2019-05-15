@@ -1,3 +1,5 @@
+package store;
+
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
@@ -11,11 +13,11 @@ import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 
 
 
-public class AgendaDatabase {
+public class DataStore {
     public static final String AGENDA_APP_DATABASE = "AGENDA_APP_DATABASE";
     private MongoDatabase database;
 
-    AgendaDatabase() {
+    public DataStore() {
         init();
     }
 
