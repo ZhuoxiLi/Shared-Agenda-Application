@@ -4,14 +4,14 @@ description: calendar object describes user information
 type: object
 additionalProperties: false
 properties:
-    calendarId:
-        description: calendar id
+    accountId:
+        description: account id
         type: string
     eventList:
         description: a list of event id
         type: array
         items:
-            type: string
+            "$ref": Event.yaml
 required:
     - calendarId
     - eventList
