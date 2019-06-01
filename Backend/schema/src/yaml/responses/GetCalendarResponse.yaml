@@ -1,0 +1,17 @@
+"$schema": "http://json-schema.org/draft-04/schema#"
+title: GetAccountResponse
+description: get account response
+type: object
+additionalProperties: false
+properties:
+    accountId:
+        description: account id (globally unique)
+        type: string
+    events:
+        description: events of the account
+        type: array
+        items:
+            "$ref": ../types/Event.yaml
+required:
+    - accountId
+    - events
