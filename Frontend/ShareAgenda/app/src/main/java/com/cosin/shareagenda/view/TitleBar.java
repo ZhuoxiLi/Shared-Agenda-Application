@@ -1,19 +1,18 @@
 package com.cosin.shareagenda.view;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
-import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.widget.Toolbar;
+
 import com.cosin.shareagenda.R;
-import com.cosin.shareagenda.activity.OldMainActivity;
-import com.cosin.shareagenda.activity.RequestActivity;
+import com.cosin.shareagenda.activity.BaseActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,8 +27,6 @@ public class TitleBar extends Toolbar {
     // bind views
     @BindView(R.id.toolbar_left_button1)
     public ImageView leftButtonImage;
-    @BindView(R.id.toolbar_right_button1)
-    public ImageView rightButtonImage;
     @BindView(R.id.toolbar_title1)
     public TextView titleTextView;
 
@@ -65,18 +62,10 @@ public class TitleBar extends Toolbar {
             titleDrawable.setCallback(this);
         }
 
-        rightButtonImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), RequestActivity.class);
-                v.getContext().startActivity(intent);
-            }
-        });
-
         a.recycle();
     }
 
-    public void setContext(final OldMainActivity context) {
+    public void setContext(final BaseActivity context) {
         leftButtonImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -97,18 +86,6 @@ public class TitleBar extends Toolbar {
         }
     }
 
-    public void showRightImage() {
-        if (rightButtonImage != null) {
-            rightButtonImage.setVisibility(View.VISIBLE);
-        }
-    }
-
-    public void hideRightImage() {
-        if (rightButtonImage != null) {
-            rightButtonImage.setVisibility(View.GONE);
-        }
-    }
-
     public void hide() {
         this.setVisibility(View.GONE);
     }
@@ -117,13 +94,6 @@ public class TitleBar extends Toolbar {
     public void setLetfButtonOnClickListerner(OnClickListener listerner) {
         if (leftButtonImage != null && listerner != null) {
             leftButtonImage.setOnClickListener(listerner);
-        }
-    }
-
-    //
-    public void setRightButtonOnClickListerner(OnClickListener listerner) {
-        if (rightButtonImage != null && listerner != null) {
-            rightButtonImage.setOnClickListener(listerner);
         }
     }
 

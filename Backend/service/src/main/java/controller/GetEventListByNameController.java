@@ -22,8 +22,17 @@ public class GetEventListByNameController extends BaseController {
         logger.info("GetEventListByName: " + request);
 
         ExceptionUtils.assertPropertyValid(request.getEventname(), ApiConstant.EVENT_EVENT_NAME);
+        ExceptionUtils.assertPropertyValid(request.getCallerId(), ApiConstant.ACCOUNT_ACCOUNT_ID);
 
         ArrayList<Event> eventList = EventListUtils.getEventListByName(request.getEventname());
-        return new ResponseEntity<>(new GetEventListByNameResponse().withEventList(eventList),HttpStatus.OK);
+
+        ArrayList<Event> finalEventList = new ArrayList<Event>();
+        for (Event event: eventList) {
+            if (EventListUtils.checkEventPermission(request.getCallerId(), event)) {
+                finalEventList.add(event);
+            }
+        }
+
+        return new ResponseEntity<>(new GetEventListByNameResponse().withEventList(finalEventList),HttpStatus.OK);
     }
 }

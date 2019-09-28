@@ -13,11 +13,25 @@ properties:
     description:
         description: user description
         type: string
+    profileImageUrl:
+        description: user profile image
+        type: string
     calendarId:
         description: calendar id
         type: string
-
+    messageQueueId:
+        description: messageQueue Id
+        type: string
+    friendQueueId:
+        description: friendQueue Id
+        type: string
+    groupQueueId:
+        description: groupQueue Id
+        type: string
 required:
     - accountId
     - nickname
     - calendarId
+    - messageQueueId
+    - friendQueueId
+    - groupQueueId

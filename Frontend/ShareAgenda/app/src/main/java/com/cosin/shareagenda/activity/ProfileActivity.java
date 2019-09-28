@@ -1,23 +1,23 @@
 package com.cosin.shareagenda.activity;
 
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 
 import com.cosin.shareagenda.R;
+import com.cosin.shareagenda.model.Model;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.pusher.pushnotifications.PushNotifications;
 import com.squareup.picasso.Picasso;
 
 public class ProfileActivity extends MainTitleActivity {
-    public static final String GOOGLE_ACCOUNT = "google_account";
-    private TextView profileName, profileEmail, profileUserId;
+    private TextView profileName, profileEmail, profileDescription, profileNickname;
     private ImageView profileImage;
     private Button signOut;
 
@@ -26,8 +26,9 @@ public class ProfileActivity extends MainTitleActivity {
         super.initView();
         profileName = findViewById(R.id.profile_text);
         profileEmail = findViewById(R.id.profile_email);
-        profileUserId = findViewById(R.id.profile_user_id);
         profileImage = findViewById(R.id.profile_image);
+        profileNickname = findViewById(R.id.profile_nickname);
+        profileDescription = findViewById(R.id.profile_description);
         signOut = findViewById(R.id.sign_out);
         signOut.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,27 +42,35 @@ public class ProfileActivity extends MainTitleActivity {
                     public void onComplete(@NonNull Task<Void> task) {
                         //On Succesfull signout we navigate the user back to LoginActivity
                         Intent intent = new Intent(ProfileActivity.this, MainActivity.class);
+                        Model.model.setLoggedIn(false);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
+                        finish();
                     }
                 });
             }
         });
+
         setDataOnView();
+        registerNotification();
+    }
+
+    private void registerNotification() {
+        PushNotifications.start(getApplicationContext(), "3dda1e61-a4af-4f29-bca8-6ad42366e5f9");
+        PushNotifications.addDeviceInterest(Model.model.getUser().getAccountId());
     }
 
     private void setDataOnView() {
-//        GoogleSignInAccount googleSignInAccount = getIntent().getParcelableExtra(GOOGLE_ACCOUNT);
-        GoogleSignInAccount googleSignInAccount = MainActivity.googleSignInAccount; // TODO need to change later
+        GoogleSignInAccount googleSignInAccount = Model.model.getGoogleSignInAccount();
 
         Picasso.with(this).load(googleSignInAccount.getPhotoUrl()).centerInside().fit().into(profileImage);
 
-
         profileName.setText(googleSignInAccount.getDisplayName());
         profileEmail.setText(googleSignInAccount.getEmail());
-        profileUserId.setText(googleSignInAccount.getId());
+        profileDescription.setText(Model.model.getUser().getDescription());
+        profileNickname.setText(Model.model.getUser().getNickname());
 
-        Toast.makeText(this, googleSignInAccount.getIdToken(), Toast.LENGTH_SHORT).show();
+        System.out.println(googleSignInAccount.getIdToken());
     }
 
     @Override
@@ -70,9 +79,8 @@ public class ProfileActivity extends MainTitleActivity {
     }
 
     @Override
-    protected void loadContentView() {
-        LayoutInflater inflater = getLayoutInflater();
-        inflater.inflate(R.layout.activity_profile, coordinatorLayout);
+    protected int getContentView() {
+        return R.layout.activity_profile;
     }
 
     @Override

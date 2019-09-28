@@ -7,10 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import types.*;
-import utils.AccountUtils;
-import utils.EventMessageUtils;
-import utils.ExceptionUtils;
-import utils.MessageUtils;
+import utils.*;
 
 
 @RestController
@@ -25,39 +22,32 @@ public class InviteEventController extends BaseController {
         ExceptionUtils.assertPropertyValid(request.getReceiverId(), ApiConstant.EVENT_RECEIVER_ID);
         ExceptionUtils.assertPropertyValid(request.getEvent(), ApiConstant.EVENT_EVENT);
 
+        // add permit to accountId
+        Permission permission = request.getEvent().getPermission();
+        if (permission.getType() != PermissionType.ACCOUNT){
+            ExceptionUtils.invalidProperty("Permission Type");
+        }
+        permission.setPermitToId(request.getReceiverId());
+        request.getEvent().setPermission(permission);
+
+        ExceptionUtils.assertEventValid(request.getEvent(), false, "");
+
         // Step II: check restriction (conflict, or naming rules etc.)
-        Account accountSender = AccountUtils.getAccount(request.getSenderId());
-        ExceptionUtils.assertDatabaseObjectFound(accountSender, ApiConstant.EVENT_SENDER_ID);
-        Account account = AccountUtils.getAccount(request.getReceiverId());
-        ExceptionUtils.assertDatabaseObjectFound(account, ApiConstant.EVENT_RECEIVER_ID);
+        Account sender = AccountUtils.getAccount(request.getSenderId(), ApiConstant.EVENT_SENDER_ID);
+        Account receiver = AccountUtils.getAccount(request.getReceiverId(), ApiConstant.EVENT_RECEIVER_ID);
+        ExceptionUtils.assertFriendship(sender, receiver.getAccountId());
 
-        // Step III: write to Database
-        CreateEventRequest ER = request.getEvent();
-
-        if(!request.getSenderId().equals(ER.getStarterId())){
+        Event event = request.getEvent();
+        if(!request.getSenderId().equals(event.getStarterId())){
             ExceptionUtils.invalidProperty("sendId need equal to starterId to invite");
         }
 
-        // TODO check friendship
+        // Note: reply's receiver and sender is opposite way of invitation
+        String messageId = EventMessageUtils
+                .createEventMessageToDatabase(event)
+                .getMessageId();
 
-        String messageId = EventMessageUtils.createEventMessageToDatabase(
-                null,
-                ER.getEventname(),
-                ER.getStarterId(),
-                ER.getType(),
-                ER.getStart(),
-                ER.getCount(),
-                ER.getDate(),
-                ER.getLocation(),
-                ER.getRepeat(),
-                ER.getState(),
-                ER.getDescription(),
-                ER.isPublic()).getMessageId();
-
-        MessageUtils.createMessageToDatabase(messageId, ApiConstant.MESSAGE_TYPE_EVENT);
-        String messageQueueId = account.getMessageQueueId();
-
-        MessageUtils.addMessageIdToMessageQueue(messageId, messageQueueId);
+        MessageQueueUtils.notifyAccounts(sender, receiver, MessageType.EVENT, messageId);
 
         // Step IV: create response object
         return new ResponseEntity<>(new InviteEventResponse().withMessageId(messageId),

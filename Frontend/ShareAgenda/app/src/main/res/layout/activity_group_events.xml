@@ -4,8 +4,7 @@
     android:id="@+id/ll_content"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".activity.GroupEventsActivity">
+    android:layout_height="match_parent">
 
     <com.cosin.shareagenda.view.TitleBar
         android:id="@+id/titlebar"
@@ -14,7 +13,6 @@
         />
 
     <LinearLayout
-        android:id="@+id/ll_feLabel"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:background="@color/friends_calendar_label"
@@ -24,8 +22,16 @@
             android:layout_width="@dimen/friends_events_time"
             android:layout_height="match_parent" />
 
+        <LinearLayout
+            android:id="@+id/ll_feLabel"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+        </LinearLayout>
+
     </LinearLayout>
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycle_ge"
         android:orientation="vertical"
         android:background="@color/friends_calendar_bg"

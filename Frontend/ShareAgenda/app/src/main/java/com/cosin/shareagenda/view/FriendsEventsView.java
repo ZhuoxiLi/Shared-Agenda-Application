@@ -24,19 +24,20 @@ import java.util.Locale;
  * TODO: document your custom view class.
  */
 public class FriendsEventsView extends View implements View.OnLongClickListener {
-    private int quarter;
-    private boolean[] evt;
+    private ItemViewListener listener;
+    protected int quarter;
+    protected boolean[] evt;
 
-    private int timeWidth;
-    private int eventWidth = 0;
-    private int eventHigh;
+    protected int timeWidth;
+    protected int eventWidth = 0;
+    protected int eventHigh;
 
     //private TextPaint mTextPaint;
-    private Paint paint;
-    private float mTextHeight;
-    private int clrText;
-    private int clrRect;
-    private int clrLine;
+    protected Paint paint;
+    protected float mTextHeight;
+    protected int clrText;
+    protected int clrRect;
+    protected int clrLine;
 
     public FriendsEventsView(Context context) {
         super(context);
@@ -58,11 +59,15 @@ public class FriendsEventsView extends View implements View.OnLongClickListener 
         this.evt = evt;
     }
 
-    private void init(AttributeSet attrs, int defStyle) {
+    public void setListener(ItemViewListener listener) {
+        this.listener = listener;
+    }
+
+    protected void init(AttributeSet attrs, int defStyle) {
         Resources resources = getContext().getResources();
         timeWidth = (int)resources.getDimension(R.dimen.friends_events_time);
         eventHigh = (int)resources.getDimension(R.dimen.friends_events_height);
-        mTextHeight = (int)resources.getDimension(R.dimen.friends_events_text_height);
+        mTextHeight = (int)resources.getDimension(R.dimen.event_text_time_size);
 
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setTextAlign(Paint.Align.LEFT);
@@ -70,13 +75,13 @@ public class FriendsEventsView extends View implements View.OnLongClickListener 
         paint.setStrokeWidth(2);
 
         clrText = resources.getColor(R.color.evtTime);
-        clrRect = resources.getColor(R.color.evtBlock);
+        clrRect = resources.getColor(R.color.evtBlock2);
         clrLine = resources.getColor(R.color.evtLine);
 
         setOnLongClickListener(this);
     }
 
-    private String getTimeString() {
+    protected String getTimeString() {
         int h = quarter / 4;
         int m = quarter % 4;
         return String.format(Locale.ENGLISH, "%2d:%02d", h, m * 15);
@@ -105,12 +110,12 @@ public class FriendsEventsView extends View implements View.OnLongClickListener 
                 paint);
 
         paint.setColor(clrRect);
-        for (int i = 0; i < evt.length; i++){
+        for (int i = 0; i < evt.length; i++) {
             if (evt[i]) {
                 canvas.drawRect(
-                        timeWidth + i * eventWidth,
+                        timeWidth + i * eventWidth + 1,
                         0,
-                        timeWidth + (i + 1) * eventWidth,
+                        timeWidth + (i + 1) * eventWidth - 1,
                         eventHigh,
                         paint);
             }
@@ -138,7 +143,7 @@ public class FriendsEventsView extends View implements View.OnLongClickListener 
 
     @Override
     public boolean onLongClick(View view) {
-        Toast.makeText(getContext(), getTimeString(), Toast.LENGTH_SHORT).show();
+        listener.dealwithItem(quarter);
         return true;
     }
 }

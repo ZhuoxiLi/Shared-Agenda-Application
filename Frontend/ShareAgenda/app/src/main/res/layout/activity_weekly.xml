@@ -4,8 +4,7 @@
     android:id="@+id/ll_content2"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".activity.WeeklyActivity">
+    android:layout_height="match_parent">
 
     <com.cosin.shareagenda.view.TitleBar
         android:id="@+id/titlebar"
@@ -14,14 +13,22 @@
         />
 
     <LinearLayout
-        android:orientation="vertical"
+        android:id="@+id/ll_weekLabel"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:background="@color/friends_calendar_label"
+        android:layout_height="@dimen/friends_events_time_height">
 
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="weekly calendar" />
+        <Space
+            android:layout_width="@dimen/friends_events_time"
+            android:layout_height="match_parent" />
+
     </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycle_week"
+        android:orientation="vertical"
+        android:background="@color/bg_green_white"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </LinearLayout>

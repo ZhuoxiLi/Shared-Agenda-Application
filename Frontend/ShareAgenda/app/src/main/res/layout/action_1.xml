@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.OldMainActivity">
+    tools:context=".activity.MainActivity">
 
     <com.cosin.shareagenda.view.TitleBar
         android:id="@+id/titlebar"
@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         />
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycle_view"
         android:orientation="vertical"
         android:layout_width="match_parent"

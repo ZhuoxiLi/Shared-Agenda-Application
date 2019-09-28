@@ -14,16 +14,23 @@ properties:
         description: group members
         type: array
         items:
-            type: string
+            "$ref": ../types/Account.yaml
     ownerId:
         description: owner id
+        type: string
+    calendarId:
+        description: calendar id
+        type: string
+    voteQueueId:
+        description: vote queue id
         type: string
     description:
         description: description of group 
         type: string
-
 required:
     - groupId
     - name
     - members
     - ownerId
+    - calendarId
+    - voteQueueId

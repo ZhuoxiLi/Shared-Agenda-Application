@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.mcxtzhang.swipemenulib.SwipeMenuLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/swp"
+    android:layout_width="match_parent"
+    android:layout_height="70dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:paddingBottom="1dp"
+    app:ios="false"
+    app:leftSwipe="true"
+    app:swipeEnable="true">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="90sp"
+        android:layout_height="90sp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        app:srcCompat="@mipmap/ic_launcher" />
+
+        <TextView
+            android:id="@+id/tvFriendMessage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="?android:attr/selectableItemBackground"
+            android:textSize="18sp"
+            android:gravity="center" />
+    </RelativeLayout>
+
+
+    <!-- swipe item disclosure -->
+    <LinearLayout
+        android:layout_width="140dp"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:background="#ddd"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/imgBtnAcceptFriendRequest"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:foregroundGravity="center"
+            android:background="#A5D6A7"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/ic_check_white_40dp" />
+
+        <ImageButton
+            android:id="@+id/imgBtnDeclineFriendRequest"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:foregroundGravity="center"
+            android:background="#FFAB91"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/ic_close_white_40dp" />
+    </LinearLayout>
+
+</com.mcxtzhang.swipemenulib.SwipeMenuLayout>

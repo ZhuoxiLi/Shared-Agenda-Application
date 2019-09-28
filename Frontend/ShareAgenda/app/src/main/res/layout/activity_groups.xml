@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.GroupsActivity">
+
+    <com.cosin.shareagenda.view.TitleBar
+        android:id="@+id/titlebar"
+        android:layout_height="@dimen/toolbar_height"
+        android:layout_width="match_parent"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:id="@+id/divider"
+        android:layout_below="@id/titlebar"
+        android:layout_height="8dp"
+        android:background="?android:attr/listDivider" />
+
+    <com.baoyz.widget.PullRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
+        android:layout_width="match_parent"
+        android:layout_below="@id/divider"
+        android:layout_height="match_parent">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvGroups"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </com.baoyz.widget.PullRefreshLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:foregroundGravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:src="@drawable/ic_group_add_white_24dp"
+        android:backgroundTint="@color/colorPrimaryDark"
+        android:layout_margin="30dp" />
+</RelativeLayout>

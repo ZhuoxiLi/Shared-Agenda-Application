@@ -1,0 +1,11 @@
+"$schema": "http://json-schema.org/draft-04/schema#"
+title: Reply invitation response
+description: Reply Invitation Response object
+type: object
+additionalProperties: false
+properties:
+  replyId:
+    description: reply id (globally unique)
+    type: string
+required:
+  - replyId

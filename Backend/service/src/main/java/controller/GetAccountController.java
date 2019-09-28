@@ -21,14 +21,17 @@ public class GetAccountController extends BaseController {
 
         ExceptionUtils.assertPropertyValid(request.getAccountId(), ApiConstant.ACCOUNT_ACCOUNT_ID);
 
-        Account account = AccountUtils.getAccount(request.getAccountId());
-        ExceptionUtils.assertDatabaseObjectFound(account, ApiConstant.ACCOUNT_ACCOUNT_ID);
+        Account account = AccountUtils.getAccount(request.getAccountId(),ApiConstant.ACCOUNT_ACCOUNT_ID);
 
         return new ResponseEntity<>(new GetAccountResponse()
-            .withAccountId(account .getAccountId())
-            .withCalendarId(account.getCalendarId())
-            .withDescription(account.getDescription())
-            .withNickname(account.getNickname()),
-            HttpStatus.OK);
+                .withAccountId(account.getAccountId())
+                .withCalendarId(account.getCalendarId())
+                .withDescription(account.getDescription())
+                .withNickname(account.getNickname())
+                .withProfileImageUrl(account.getProfileImageUrl())
+                .withMessageQueueId(account.getMessageQueueId())
+                .withFriendQueueId(account.getFriendQueueId())
+                .withGroupQueueId(account.getGroupQueueId()),
+                HttpStatus.OK);
     }
 }

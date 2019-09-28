@@ -22,8 +22,7 @@ public class CancelEventController extends BaseController {
         ExceptionUtils.assertPropertyValid(request.getAccountId(), ApiConstant.ACCOUNT_ACCOUNT_ID);
 
         // check accountId is a valid accountId
-        Account account = AccountUtils.getAccount(request.getAccountId());
-        ExceptionUtils.assertDatabaseObjectFound(account, ApiConstant.ACCOUNT_ACCOUNT_ID);
+        AccountUtils.getAccount(request.getAccountId(),ApiConstant.ACCOUNT_ACCOUNT_ID);
 
         Event event = EventListUtils.getEventListById(request.getEventId());
         ExceptionUtils.assertDatabaseObjectFound(event, ApiConstant.EVENT_EVENT_ID);
@@ -32,21 +31,8 @@ public class CancelEventController extends BaseController {
             // no permission to cancel the event
             ExceptionUtils.invalidProperty("Only owner can cancel the event");
         }
-
-        EventListUtils.updateEventInDatabase(
-                request.getEventId(),
-                event.getEventname(),
-                event.getStarterId(),
-                event.getType(),
-                event.getStart(),
-                event.getCount(),
-                event.getDate(),
-                event.getLocation(),
-                event.getRepeat(),
-                EventState.CANCELLED,
-                event.getDescription(),
-                event.isPublic()
-        );
+        event.setState(EventState.CANCELLED);
+        EventListUtils.updateEventInDatabase(event);
 
         return new ResponseEntity<>(new CancelEventResponse()
                 .withEventId(event.getEventId()),
